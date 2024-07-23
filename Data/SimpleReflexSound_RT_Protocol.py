@@ -5,8 +5,8 @@ import csv
 import datetime as datetime
 
 # variables used
-num_practice_trials = 10
-num_trials = 100
+num_practice_trials = 1
+num_trials = 3
 
 # Initialize pygame
 pygame.init()
@@ -104,7 +104,7 @@ while not done:
                 text = text[:-1]
             else:
                 text += event.unicode
-filename = f"{text}.SRrtData.{datetime.datetime.now()}.csv"
+filename = f"{text}_SRrtData_{datetime.date.today()}.csv"
 # so that the file has the name, date and time of each participant
 
 # Display instructions

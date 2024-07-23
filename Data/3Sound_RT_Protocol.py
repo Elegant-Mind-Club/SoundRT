@@ -17,9 +17,9 @@ pygame.display.set_caption("Pitch Identification Task")
 
 # INSERT SOUND FILES FROM GITHUB HERE
 sounds = {
-    'V': pygame.mixer.Sound('/Users/taneeshkondapally/Desktop/File_A4.wav'), # INSERT LOWEST PITCH HERE
-    'B': pygame.mixer.Sound('/Users/taneeshkondapally/Desktop/File_A5.wav'), # INSERT MIDDLE PITCH HERE
-    'N': pygame.mixer.Sound('/Users/taneeshkondapally/Desktop/File_A6.wav') # INSERT HIGHEST PITCH HERE
+    'V': pygame.mixer.Sound(r'c:\Users\elega\OneDrive\Documents\GitHub\SoundRT\Sound Files\Sound V.wav'), # INSERT V PITCH HERE
+    'B': pygame.mixer.Sound(r'c:\Users\elega\OneDrive\Documents\GitHub\SoundRT\Sound Files\Sound B.wav'), # INSERT B PITCH HERE
+    'N': pygame.mixer.Sound(r'c:\Users\elega\OneDrive\Documents\GitHub\SoundRT\Sound Files\Sound N.wav') # INSERT N PITCH HERE
 }
 
 # Mapping keys to pitches
@@ -109,7 +109,7 @@ while not done:
                 text = text[:-1]
             else:
                 text += event.unicode
-filename = f"{text}.3SrtData.{datetime.datetime.now()}.csv"
+filename = f"{text}.3SrtData.{datetime.date.today()}.csv"
 # so that the file has the name of each participant
 
 # Display instructions
