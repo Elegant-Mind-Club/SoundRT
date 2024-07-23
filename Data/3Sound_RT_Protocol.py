@@ -5,8 +5,8 @@ import csv
 import datetime as datetime
 
 # variables used
-num_practice_trials = 1
-num_trials = 3
+num_practice_trials = 10
+num_trials = 100
 
 # Initialize pygame
 pygame.init()
@@ -63,7 +63,7 @@ def printText(instructions):
 # Protocol function
 def protocolFunction(trials):
     for trial in range(trials):
-        time.sleep*(random.uniform(1,3))
+        time.sleep(random.uniform(1,3))
         # Plays random pitch
         pitch = random.choice(list(sounds.keys()))
         sounds[pitch].play()
