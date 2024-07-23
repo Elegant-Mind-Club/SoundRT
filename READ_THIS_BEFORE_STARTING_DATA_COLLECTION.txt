@@ -1,0 +1,9 @@
+﻿Before running anything:
+* Download pygame by running python3 -m pip install -U pygame==2.6.0
+   * If that doesn’t work, look up pygame download, install it from there
+* Change files in each protocol to the corresponding one in the sounds folder
+   * Simple Reflex should have the V file
+   * 2 Stimuli should have the V and B files (in that order, sounds 1 and 2)
+   * 3 Stimuli should have the V, B, and N files (in that order, sounds 1, 2, and 3)
+* DO NOT USE BLUETOOTH
+   * Headphones that are used must be plugged in through AUX cable
