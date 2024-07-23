@@ -5,5 +5,6 @@
    * Simple Reflex should have the V file
    * 2 Stimuli should have the V and B files (in that order, sounds 1 and 2)
    * 3 Stimuli should have the V, B, and N files (in that order, sounds 1, 2, and 3)
+   * MAKE SURE TO INPUT A RAW STRING ('V': pygame.mixer.Sound(r'[filepath]))
 * DO NOT USE BLUETOOTH
    * Headphones that are used must be plugged in through AUX cable

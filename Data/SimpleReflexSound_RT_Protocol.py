@@ -17,7 +17,7 @@ pygame.display.set_caption("Pitch Identification Task")
 
 # INSERT SOUND FILES FROM GITHUB HERE
 sounds = {
-    'V': pygame.mixer.Sound('/Users/taneeshkondapally/Desktop/File_A4.wav'), # INSERT PITCH HERE
+    'V': pygame.mixer.Sound(r'c:\Users\elega\OneDrive\Documents\GitHub\SoundRT\Sound Files\Sound V.wav') # INSERT PITCH HERE
 }
 
 # Mapping keys to pitches
