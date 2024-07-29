@@ -67,7 +67,7 @@ def protocolFunction(trials):
         # Plays random pitch
         pitch = random.choice(list(sounds.keys()))
         sounds[pitch].play()
-        start_time = time.time()
+        start_time = time.time()*1000
         # Wait for response
         response = None
         correct = None
@@ -76,7 +76,7 @@ def protocolFunction(trials):
         while responding:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    response_time = time.time()
+                    response_time = time.time()*1000
                     response = event.key
                     if key_pitch_map.get(response) == pitch:
                         correct = True
