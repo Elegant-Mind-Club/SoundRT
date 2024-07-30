@@ -1,6 +1,5 @@
 // Reaction time experiment of one LED.
 // LED will flash 3 times before the start of the experiment.
-#include <UnixTime.h>
 
 int trialMax = 100;
 int numCorrect = 0;
@@ -31,12 +30,8 @@ long randDelay;
 long StimType;
 long Guess;
 bool Correct;
-unsigned long ObjShowTime;
-unsigned long ReactionTime;
-
-
-//Unix Time Setup
-UnixTime unixTime(0);
+long ObjShowTime;
+long ReactionTime;
 
 // The setup function runs once when you press reset or power the board
 void setup() {
@@ -67,10 +62,9 @@ void setup() {
   randomSeed(analogRead(A0));
   randDelay = random(3000, 6000);
   delay(randDelay);
-  Serial.print("ObjShowTime, ReactionTime, StimType, Guess, Correct");
+  Serial.println("ObjShowTime, ReactionTime, StimType, Guess, Correct");
 
-  // Unix Time setup
-  uint32_t unix = unixTime.getUnix();
+  
 }
 
 // the loop function runs over and over again forever
@@ -86,9 +80,6 @@ void loop() {
 
     // Pick a random RGB color.
     motorPick = random(0, numMotors);
-    ObjShowTime = unixTime.second*1000;
-    Serial.print(ObjShowTime);
-    Serial.print(",");
     // Turn the LED on and record time, trial has begun.
     if (motorPick == 0) {
       digitalWrite(motorPin1, HIGH);
@@ -111,47 +102,57 @@ void loop() {
       motorState3 = HIGH;
       StimType = 3;
     }
+    ObjShowTime = millis();
   }
 
   // Criteria for trial end.
   if (buttonState1 == HIGH || buttonState2 == HIGH || buttonState3 == HIGH) {
-    Serial.print(unixTime.second*1000);
-    Serial.print(",");
+    ReactionTime = millis();
     trialNum++;
     if (buttonState1 == HIGH) {
       Guess = 1;
       digitalWrite(buttonPin1, 0);
+      buttonState1 = LOW;
     }
     else if (buttonState2 == HIGH) {
       Guess = 2;
       digitalWrite(buttonPin2, 0);
+      buttonState2 = LOW;
     }
     else {
       Guess = 3;
       digitalWrite(buttonPin3, 0);
+      buttonState3 = LOW;
     }
-    if (StimType = Guess) {
+    if (StimType == Guess) {
       Correct = true;
       numCorrect++;
     }
     else {
       Correct = false;
     }
+    Serial.print(ObjShowTime);
+    Serial.print(",");
+    Serial.print(ReactionTime);
+    Serial.print(",");
     Serial.print(StimType);
     Serial.print(",");
     Serial.print(Guess);
     Serial.print(",");
     Serial.println(Correct);
-    if (motorPin1 == HIGH) {
+    if (motorState1 == HIGH) {
       digitalWrite(motorPin1, 0);
+      motorState1 = LOW;
     }
-    else if (motorPin2 == HIGH)
+    else if (motorState2 == HIGH)
     {
       digitalWrite(motorPin2, 0);
+      motorState2 = LOW;
     }
     else
     {
       digitalWrite(motorPin3, 0);
+      motorState3 = LOW;
     }
     randDelay = random(500, 1500);
     delay(randDelay);
@@ -170,85 +171,3 @@ void loop() {
     exit(0);
   }
 }
-/*if (motorState1 == HIGH && buttonState1 == HIGH || motorState2 == HIGH && buttonState2 == HIGH) {
-      numCorrect++;
-      trialNum++;
-
-      // Record time when button was pressed and turn off LED
-      digitalWrite(motorPin1, 0);
-
-      // Print to console the time differnce between LED turn off to button pressed.
-      Serial.print(",1,1,");
-      
-
-      // Reset trial and wait a random amount of time for next trial.
-      motorState1 = LOW;
-      randDelay = random(1000, 3000);
-      delay(randDelay);
-    } else if (motorState2 == HIGH && buttonState2 == HIGH) {
-      numCorrect++;
-      trialNum++;
-
-      // Record time when button was pressed and turn off LED
-      newT = millis();
-      digitalWrite(motorPin2, 0);
-
-      // Print to console the time differnce between LED turn off to button pressed.
-      deltaT = newT - oldT;
-      Serial.print(trialNum);
-      Serial.print(";2;");
-      Serial.println(deltaT);
-
-      // Reset trial and wait a random amount of time for next trial.
-      motorState2 = LOW;
-      randDelay = random(1000, 3000);
-      delay(randDelay);
-    } else if (motorState3 == HIGH && buttonState3 == HIGH) {
-      numCorrect++;
-      trialNum++;
-
-      // Record time when button was pressed and turn off LED
-      newT = millis();
-      digitalWrite(motorPin3, 0);
-
-      // Print to console the time differnce between LED turn off to button pressed.
-      deltaT = newT - oldT;
-      Serial.print(trialNum);
-      Serial.print(";3;");
-      Serial.println(deltaT);
-
-      // Reset trial and wait a random amount of time for next trial.
-      motorState3 = LOW;
-      randDelay = random(1000, 3000);
-      delay(randDelay);
-    } 
-    else if (buttonState1 == HIGH || buttonState2 == HIGH || buttonState3 == HIGH) {
-      trialNum++;
-      if (motorState3 == HIGH) {
-        digitalWrite(motorPin3, 0);
-        // Print to console the time differnce between LED turn off to button pressed.
-        Serial.print(trialNum);
-        Serial.print(";2;");
-        Serial.println(0);
-        motorState3 = LOW;
-      } else if (motorState2 == HIGH) {
-        digitalWrite(motorPin2, 0);
-        // Print to console the time differnce between LED turn off to button pressed.
-        Serial.print(trialNum);
-        Serial.print(";2;");
-        Serial.println(0);
-        motorState2 = LOW;
-      } else if (motorState1 == HIGH) {
-        digitalWrite(motorPin1, 0);
-        // Print to console the time differnce between LED turn off to button pressed.
-        Serial.print(trialNum);
-        Serial.print(";1;");
-        Serial.println(0);
-        motorState1 = LOW;
-      }
-
-
-      // Reset trial and wait a random amount of time for next trial.
-      randDelay = random(1000, 3000);
-      delay(randDelay);
-    }*/
