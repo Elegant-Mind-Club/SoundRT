@@ -1,7 +1,6 @@
 // Reaction time experiment of one LED.
 // LED will flash 3 times before the start of the experiment.
-#include <Wire.h>
-#include <RTClib.h>
+#include <UnixTime.h>
 
 int trialMax = 100;
 int numCorrect = 0;
@@ -32,6 +31,12 @@ long randDelay;
 long StimType;
 long Guess;
 bool Correct;
+unsigned long ObjShowTime;
+unsigned long ReactionTime;
+
+
+//Unix Time Setup
+UnixTime unixTime(0);
 
 // The setup function runs once when you press reset or power the board
 void setup() {
@@ -48,7 +53,6 @@ void setup() {
   // Intialize serial communication.
   Serial.begin(9600);
 
-  Serial.println("Prepare. Reaction time measurements will begin shortly!");
   for (int i = 0; i <= 2; i++) {
     digitalWrite(motorPin1, HIGH);
     digitalWrite(motorPin2, HIGH);
@@ -63,17 +67,10 @@ void setup() {
   randomSeed(analogRead(A0));
   randDelay = random(3000, 6000);
   delay(randDelay);
+  Serial.print("ObjShowTime, ReactionTime, StimType, Guess, Correct");
 
-  if (!rtc.begin()) {
-    Serial.println("Couldn't find RTC");
-    while (1);
-  }
-  if (rtc.lostPower()) {
-    Serial.println("RTC lost power, let's set the time!");
-    // Uncomment to set the time
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    Serial.printIn("ObjShowTime,ReactionTime,StimType,Guess,Correct")
-  }
+  // Unix Time setup
+  uint32_t unix = unixTime.getUnix();
 }
 
 // the loop function runs over and over again forever
@@ -89,8 +86,9 @@ void loop() {
 
     // Pick a random RGB color.
     motorPick = random(0, numMotors);
-    Serial.print(now.unixtime()*1000);
-    Serial.print(",")
+    ObjShowTime = unixTime.second*1000;
+    Serial.print(ObjShowTime);
+    Serial.print(",");
     // Turn the LED on and record time, trial has begun.
     if (motorPick == 0) {
       digitalWrite(motorPin1, HIGH);
@@ -98,14 +96,15 @@ void loop() {
       motorState2 = LOW;
       motorState3 = LOW;
       StimType = 1;
-
-    } else if (motorPick == 1) {
+    } 
+    else if (motorPick == 1) {
       digitalWrite(motorPin2, HIGH);
       motorState1 = LOW;
       motorState2 = HIGH;
       motorState3 = LOW;
       StimType = 2;
-    } else {
+    } 
+    else {
       digitalWrite(motorPin3, HIGH);
       motorState1 = LOW;
       motorState2 = LOW;
@@ -115,15 +114,15 @@ void loop() {
   }
 
   // Criteria for trial end.
-  if (buttonState1 == HIGH || buttonState == HIGH || buttonState3 == HIGH) {
-    Serial.print(now.unixtime()*1000);
+  if (buttonState1 == HIGH || buttonState2 == HIGH || buttonState3 == HIGH) {
+    Serial.print(unixTime.second*1000);
     Serial.print(",");
     trialNum++;
     if (buttonState1 == HIGH) {
       Guess = 1;
       digitalWrite(buttonPin1, 0);
     }
-    else if (buttonState 2 == HIGH) {
+    else if (buttonState2 == HIGH) {
       Guess = 2;
       digitalWrite(buttonPin2, 0);
     }
@@ -132,11 +131,11 @@ void loop() {
       digitalWrite(buttonPin3, 0);
     }
     if (StimType = Guess) {
-      Correct = True;
+      Correct = true;
       numCorrect++;
     }
     else {
-      Correct = False;
+      Correct = false;
     }
     Serial.print(StimType);
     Serial.print(",");
