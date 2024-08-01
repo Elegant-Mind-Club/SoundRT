@@ -58,13 +58,11 @@ void setup() {
     digitalWrite(motorPin3, LOW);
     delay(250);
   }
-
+  Serial.println("ObjShowTime, ReactionTime, StimType, Guess, Correct");
   randomSeed(analogRead(A0));
   randDelay = random(3000, 6000);
   delay(randDelay);
-  Serial.println("ObjShowTime, ReactionTime, StimType, Guess, Correct");
-
-  
+   
 }
 
 // the loop function runs over and over again forever
