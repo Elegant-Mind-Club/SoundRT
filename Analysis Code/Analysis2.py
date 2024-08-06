@@ -4,62 +4,87 @@ import seaborn as sns
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 
-file_path = r'/Users/taneeshkondapally/Downloads/Taneesh_SRrtData_2024-07-23.csv' # INSERT FILE NAMES TO ANALYZE HERE
-file_path2 = r'/Users/taneeshkondapally/Downloads/Taneesh.2SrtData.2024-07-23.csv'
-file_path3 = r'/Users/taneeshkondapally/Downloads/Taneesh.3SrtData.2024-07-23.csv'
+def gaussian(x, amp, mu, sigma):
+    return amp * np.exp(- (x - mu) ** 2 / (2 * sigma ** 2))
+
+def process_data(df, df_name, coloration, coloration2, coloration3):
+    # Step 1: Remove any trials that are False in the 'Correct' column
+    df = df[df['Correct']]
+
+    # Step 2: Generate a new column 'TimeDifference' by doing ReactionTime - ObjShowTime
+    df['TimeDifference'] = df['ReactionTime'] - df['ObjShowTime']
+
+    # Step 3: Convert all data to milliseconds
+    df['TimeDifference'] *= 1000
+
+    # Step 4: Subtract 50 ms from all trials
+    df['TimeDifference'] -= 50
+
+    # Step 5: Remove outliers using the 1.5*IQR method
+    Q1 = df['TimeDifference'].quantile(0.25)
+    Q3 = df['TimeDifference'].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    df = df[(df['TimeDifference'] >= lower_bound) & (df['TimeDifference'] <= upper_bound)]
+
+    mean_value = df['TimeDifference'].mean()
+    std_deviation = df['TimeDifference'].std()
+
+    hist, bin_edges = np.histogram(df['TimeDifference'], bins=range(int(df['TimeDifference'].min()), 
+                  int(df['TimeDifference'].max()) + 25, 25), density=True)
+    bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+
+    popt, pcov = curve_fit(gaussian, bin_centers, hist, p0=[1, mean_value, std_deviation])
+
+    fitted_amp, fitted_mean, fitted_std = popt
+   
+    sns.histplot(df['TimeDifference'], bins=bin_edges, kde=False, color=coloration, stat='density')
+    plt.axvline(mean_value, color=coloration2, linestyle='solid', linewidth=1, label=f'{df_name} Stimulus - Mean: {mean_value:.2f} ms')
+    plt.axvline(mean_value + std_deviation, color=coloration3, linestyle='dashed', linewidth=1, label=f'Standard Deviation: {std_deviation:.2f} ms')
+    plt.axvline(mean_value - std_deviation, color=coloration3, linestyle='dashed', linewidth=1)
+
+    # Plot Gaussian fit
+    x_fit = np.linspace(mean_value - 4*std_deviation, mean_value + 4*std_deviation, 1000)
+    y_fit = gaussian(x_fit, *popt)
+    plt.plot(x_fit, y_fit, color=coloration3, linewidth=2, label=f'Gaussian Fit {df_name}: μ = {fitted_mean:.2f} ms, σ = {fitted_std:.2f} ms')
+
+
+
+file_path = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Taneesh_SRrtData_2024-07-23.csv' # INSERT FILE NAMES TO ANALYZE HERE
+file_path2 = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Taneesh.2SrtData.2024-07-23.csv'
+file_path3 = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Taneesh.3SrtData.2024-07-23.csv'
 data = pd.read_csv(file_path)
 data2 = pd.read_csv(file_path2)
 data3 = pd.read_csv(file_path3)
+data_name = "1 Stimulus"
+data2_name = "2 Stimuli"
+data3_name = "3 Stimuli"
+OneGColor = '#FF8080'
+OneSColor = '#800000'
+OneFColor = '#FF0000'
+TwoGColor = '#80FF80'
+TwoSColor = '#008000'
+TwoFColor = '#00FF00'
+ThreeGColor = '#8080FF'
+ThreeSColor = '#000080'
+ThreeFColor = '#0000FF'
 
-# Remove trials with False in the 'Correct' column
-filtered_data = data[data['Correct'] == True]
+plt.figure(figsize=(10, 6))
+process_data(data, data_name, OneGColor, OneSColor, OneFColor)
+process_data(data2, data2_name, TwoGColor, TwoSColor, TwoFColor)
+process_data(data3, data3_name, ThreeGColor, ThreeSColor, ThreeFColor)
 
-# Convert time columns to numeric
-filtered_data['ObjShowTime'] = pd.to_numeric(filtered_data['ObjShowTime'])
-filtered_data['ReactionTime'] = pd.to_numeric(filtered_data['ReactionTime'])
+plt.title('Histogram for Auditory 1, 2, and 3 Stimuli Reflex Time with Gaussian Fit')
+plt.xlabel('Reaction Time (ms)')
+plt.ylabel('Frequency Density')
+plt.legend()
+plt.grid(False)
+plt.xlim(0, 600)
+plt.tight_layout()
+plt.show()
 
-# Calculate ReactionTime - ObjShowTime
-filtered_data['TimeDifference'] = filtered_data['ReactionTime'] - filtered_data['ObjShowTime']
-
-# Remove 50 ms from all trials
-filtered_data['TimeDifference'] = filtered_data['TimeDifference'] - 50
-
-# Remove outliers beyond 1.5*IQR
-Q1 = filtered_data['TimeDifference'].quantile(0.25)
-Q3 = filtered_data['TimeDifference'].quantile(0.75)
-IQR = Q3 - Q1
-lower_bound = Q1 - 1.5 * IQR
-upper_bound = Q3 + 1.5 * IQR
-
-filtered_data = filtered_data[(filtered_data['TimeDifference'] >= lower_bound) & (filtered_data['TimeDifference'] <= upper_bound)]
-
-# Calculate mean and standard deviation
-mean_value = filtered_data['TimeDifference'].mean()
-std_deviation = filtered_data['TimeDifference'].std()
-
-# Remove all trials with False in the 'Correct' column
-filtered_data2 = data2[data2['Correct'] == True]
-
-# Convert time columns to numeric
-filtered_data2['ObjShowTime'] = pd.to_numeric(filtered_data2['ObjShowTime'])
-filtered_data2['ReactionTime'] = pd.to_numeric(filtered_data2['ReactionTime'])
-
-# Calculate ReactionTime - ObjShowTime
-filtered_data2['TimeDifference'] = filtered_data2['ReactionTime'] - filtered_data2['ObjShowTime']
-
-# Remove 50 ms from all trials
-filtered_data2['TimeDifference'] = filtered_data2['TimeDifference'] - 50
-
-# Remove outliers beyond 1.5*IQR
-Q1 = filtered_data2['TimeDifference'].quantile(0.25)
-Q3 = filtered_data2['TimeDifference'].quantile(0.75)
-IQR = Q3 - Q1
-lower_bound = Q1 - 1.5 * IQR
-upper_bound = Q3 + 1.5 * IQR
-
-filtered_data2 = filtered_data2[(filtered_data2['TimeDifference'] >= lower_bound) & (filtered_data2['TimeDifference'] <= upper_bound)]
-
-# Calculate mean and standard deviation
+"""# Calculate mean and standard deviation
 mean_value2 = filtered_data2['TimeDifference'].mean()
 std_deviation2 = filtered_data2['TimeDifference'].std()
 
@@ -79,6 +104,7 @@ hist2, bin_edges2 = np.histogram(filtered_data2['TimeDifference'], bins=range(in
 
 bin_centers2 = (bin_edges2[:-1] + bin_edges2[1:]) / 2
 
+print(filtered_data['TimeDifference'])
 # Fit Gaussian
 popt, pcov = curve_fit(gaussian, bin_centers, hist, p0=[1, mean_value, std_deviation])
 
@@ -168,4 +194,4 @@ plt.legend()
 plt.grid(False)
 plt.xlim(0, 600)
 plt.tight_layout()
-plt.show()
+plt.show()"""

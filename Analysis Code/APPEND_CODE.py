@@ -2,6 +2,7 @@ import argparse
 import csv
 
 # FOR EASE: JUST PASS THROUGH COMMAND LINE 'python3 {code file path} {source file path} {destination file path}
+# SECOND THING: WHENEVER RUNNING THIS PROGRAM, RENAME THE DESTINATION FILE AFTER THE PATH --> ADD 1 TO THE LAST NUMBER IN THE FILE (GIVING US OUR N NUMBER)
 def append_csv(source_file, destination_file):
     # Read the contents of the source file
     with open(source_file, 'r', newline='') as src:
