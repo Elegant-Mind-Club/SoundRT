@@ -11,7 +11,7 @@ data = pd.read_csv(file_path)
 data2 = pd.read_csv(file_path2)
 data3 = pd.read_csv(file_path3)
 
-# Remove all trials with False in the 'Correct' column
+# Remove trials with False in the 'Correct' column
 filtered_data = data[data['Correct'] == True]
 
 # Convert time columns to numeric
