@@ -7,7 +7,7 @@ import csv
 def append_csv(source_file, destination_file):
     # Read the contents of the source file
     with open(source_file, 'r', newline='') as src:
-        reader = csv.reader(src)
+        reader = csv.reader(src, delimiter=',')
         next(reader)
         rows = list(reader)  # Store all rows from the source file
 
