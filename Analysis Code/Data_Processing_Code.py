@@ -26,7 +26,7 @@ def process_csv(input_file_path, output_file_path):
     data.iloc[:, 2] = data.iloc[:, 2] + (first_number*1000)
     data.iloc[:, 2] = data.iloc[:, 2] - (second_number/1000) # Subtract from the second column
 
-    data.iloc[:, 1] = data.iloc[:, 1] - 0.05
+    data.iloc[:, 1] = data.iloc[:, 1]
     data.iloc[:, 2] = data.iloc[:, 2] - 50
 
 
