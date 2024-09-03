@@ -4,7 +4,6 @@ import argparse
 def process_csv(input_file_path, output_file_path):
     # Step 1: Read the CSV file, skipping the first line initially
     data = pd.read_csv(input_file_path, skiprows=1)
-    data = data[data['Correct'] == 1]
     
     # Step 2: Read the first line to get the two variables
     with open(input_file_path, 'r') as file:
@@ -32,7 +31,9 @@ def process_csv(input_file_path, output_file_path):
 
     # Step 4: Save the processed data to the output file path
     data.to_csv(output_file_path, index=False)
-
+    data2 = pd.read_csv(output_file_path)
+    data2 = data2[data2['Correct'] == 1]
+    data2.to_csv(output_file_path, index=False)
     print(f"Processing complete. The new file is saved as '{output_file_path}'.")
 
 def main():
