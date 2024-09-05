@@ -51,11 +51,11 @@ def process_data(df, df_name, coloration, coloration2, coloration3):
 
 
 
-file_path = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Touch Files/TData/3RTactileData/AAAppend-3RTactile-N=5.csv' # INSERT FILE NAMES TO ANALYZE HERE
-file_path2 = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Vision Files/VData/AAAppend-3RVisual-N=5.csv'
+file_path = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Auditory-3RCEG/AAppend-Auditory3RCEG-N=4.csv' # INSERT FILE NAMES TO ANALYZE HERE
+file_path2 = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Vision Files/VData/rgb/RTProcessing/AAppendrgb-N=4.csv'
 data = pd.read_csv(file_path, delimiter=',')
 data2 = pd.read_csv(file_path2, delimiter=',')
-data_name = "Tactile"
+data_name = "Auditory"
 data2_name = "Visual"
 OneGColor = '#FF8080'
 OneSColor = '#800000'
@@ -63,12 +63,12 @@ OneFColor = '#FF0000'
 TwoGColor = '#80FF80'
 TwoSColor = '#008000'
 TwoFColor = '#00FF00'
-
+'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Auditory-SRC/AAppend-AuditorySRC-N=4.csv'
 plt.figure(figsize=(10, 6))
 process_data(data, data_name, OneGColor, OneSColor, OneFColor)
 process_data(data2, data2_name, TwoGColor, TwoSColor, TwoFColor)
 
-plt.title('Histogram for Tactile vs. Visual Stimuli - 3 Stimuli, N=5')
+plt.title('Histogram for Auditory vs. Visual Stimuli - 3 Stimuli, N=4')
 plt.xlabel('Reaction Time (ms)')
 plt.ylabel('Frequency Density')
 plt.legend()
