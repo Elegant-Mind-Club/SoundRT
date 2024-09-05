@@ -40,9 +40,9 @@ def process_data(df, df_name, coloration, coloration2, coloration3):
     fitted_amp, fitted_mean, fitted_std = popt
    
     sns.histplot(df['TimeDifference'], bins=bin_edges, kde=False, color=coloration, stat='density')
-    #plt.axvline(mean_value, color=coloration2, linestyle='solid', linewidth=1, label=f'{df_name} Stimulus - Mean: {mean_value:.2f} ms')
-    #plt.axvline(mean_value + std_deviation, color=coloration3, linestyle='dashed', linewidth=1, label=f'Standard Deviation: {std_deviation:.2f} ms')
-    #plt.axvline(mean_value - std_deviation, color=coloration3, linestyle='dashed', linewidth=1)
+    plt.axvline(mean_value, color=coloration2, linestyle='solid', linewidth=1, label=f'{df_name} Stimulus - Mean: {mean_value:.2f} ms')
+    plt.axvline(mean_value + std_deviation, color=coloration3, linestyle='dashed', linewidth=1, label=f'Standard Deviation: {std_deviation:.2f} ms')
+    plt.axvline(mean_value - std_deviation, color=coloration3, linestyle='dashed', linewidth=1)
 
     # Plot Gaussian fit
     x_fit = np.linspace(mean_value - 4*std_deviation, mean_value + 4*std_deviation, 1000)
