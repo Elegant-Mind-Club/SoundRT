@@ -19,8 +19,8 @@
 #define COLOR_ORDER GRB
 CRGB leds[NUM_LEDS];
 
-#define BRIGHTNESS  100
-#define TRIAL_MAX   200 
+#define BRIGHTNESS  128
+#define TRIAL_MAX   100 
 
 int ledIndex = 66;  // Index of the LED to be used on the strip
 CRGB color;
