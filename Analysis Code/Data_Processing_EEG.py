@@ -28,7 +28,6 @@ def process_csv(input_file_path, output_file_path):
     data.iloc[:, 1] = data.iloc[:, 1]
     data.iloc[:, 2] = data.iloc[:, 2] - (data.iloc[:, 1] * 1000) - 50
 
-
     # Step 4: Save the processed data to the output file path
     data.to_csv(output_file_path, index=False)
     data2 = pd.read_csv(output_file_path)

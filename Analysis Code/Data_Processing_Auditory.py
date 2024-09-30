@@ -10,6 +10,7 @@ def process_csv(input_file_path, output_file_path):
     with open(input_file_path, 'r') as file:
         first_line = file.readline().strip()
         first_line = re.sub(r'[^\d.,-]', '', first_line)
+    # Extract variables from the first line
     variables = list(map(float, first_line.split(',')))
     # Remove any empty strings and convert to float
     try:
