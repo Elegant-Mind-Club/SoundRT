@@ -1,8 +1,8 @@
 #include <Wire.h>
 #include <RTClib.h>
 
-
-int TRIAL_MAX = 100;
+int PTRIAL_MAX = 25;
+int TRIAL_MAX = 100 + PTRIAL_MAX;
 
 int trialVariable = 2; // 2 Pitch
 int motorPin1 = 11;
@@ -25,11 +25,10 @@ int buttonState2 = LOW;
 int StimType;
 int Guess;
 bool Correct;
-int numCorrect;
+int numCorrect = 0;
 
 // Object
 RTC_DS3231 rtc; 
-int trialNum = 0;
 long randDelay;
 DateTime startTime;
 DateTime currentTime;
@@ -82,156 +81,183 @@ void setup() {
   }
 
   // Print the header for the results
-  Serial.println("trialNum,ObjShowTime,ReactionTime,StimType,Guess,Correct");
+  Serial.println("ObjShowTime,ReactionTime,StimType,Guess,Correct");
   randomSeed(analogRead(A0)); 
   delay(3000);
 }
 
 // Wait for a random period between 1 and 2.5 seconds
 void loop() {
-  
   buttonState1 = digitalRead(buttonPin1);
   buttonState2 = digitalRead(buttonPin2);
   buttonState3 = digitalRead(buttonPin3);
-  if (motorState1 == LOW && buttonState1 == 0 && motorState2 == LOW && buttonState2 == 0 && motorState3 == LOW && buttonState3 == 0) {
-    // Monitor for the start of a new second
-    /*do {
-      currentTime = rtc.now();
-    } while (currentTime.second() == rtc.now().second());
-    startTime = rtc.now();
-    startMicros = micros();
-    Serial.print(startTime.unixtime());
-    Serial.print(".000,");
-    randDelay = random(500, 600);
-    delay(randDelay);*/
-    motorPick = random(trialVariable);
-    tone(motorPin1, toneVar[motorPick]);
-    if (motorPick == 0) {      
-      motorState1 = HIGH;
-      motorState2 = LOW;
-      motorState3 = LOW;
-      StimType = 1;
+  if (numCorrect < PTRIAL_MAX) { 
+    if (motorState1 == LOW && buttonState1 == 0 && motorState2 == LOW && buttonState2 == 0 && motorState3 == LOW && buttonState3 == 0) {
+      motorPick = random(trialVariable);
+      tone(motorPin1, toneVar[motorPick]);
+      if (motorPick == 0) {      
+        motorState1 = HIGH;
+        motorState2 = LOW;
+        motorState3 = LOW;
+        StimType = 1;
+      }
+      else if (motorPick == 1) {  
+        motorState1 = LOW;
+        motorState2 = HIGH;
+        motorState3 = LOW;
+        StimType = 2;
+      }
+      else {
+        motorState1 = LOW;
+        motorState2 = LOW;
+        motorState3 = HIGH;
+        StimType = 3;
+      }
     }
-    else if (motorPick == 1) {  
-      motorState1 = LOW;
-      motorState2 = HIGH;
-      motorState3 = LOW;
-      StimType = 2;
+
+    if (buttonState1 == HIGH || buttonState2 == HIGH || buttonState3 == HIGH) {
+      if (buttonState1 == HIGH) {
+        Guess = 1;
+        digitalWrite(buttonPin1, 0);
+        buttonState1 = LOW;
+      }
+      else if (buttonState2 == HIGH) {
+        Guess = 2;
+        digitalWrite(buttonPin2, 0);
+        buttonState2 = LOW;
+      }
+      else {
+        Guess = 3;
+        digitalWrite(buttonPin3, 0);
+        buttonState3 = LOW;
+      }
+      noTone(motorPin1);
+      if (StimType == Guess) {
+        numCorrect++;
+        tone(motorPin1, 262, 50);
+        delay(50);
+        tone(motorPin1, 349, 100);
+        delay(100);
+      }
+      else {
+        tone(motorPin1, 294, 50);
+        delay(50);
+        tone(motorPin1, 247, 100);
+        delay(100);
+      }
+      noTone(motorPin1);
+      if (motorState1 == HIGH) {
+        motorState1 = LOW;
+      }
+      else if (motorState2 == HIGH)
+      {
+        motorState2 = LOW;
+      }
+      else
+      {
+        motorState3 = LOW;
+      }
+      randDelay = random(500, 1500);
+      delay(randDelay);
     }
-    else {
-      motorState1 = LOW;
-      motorState2 = LOW;
-      motorState3 = HIGH;
-      StimType = 3;
+    // Check if trial limit reached, flash LEDs to signal end of experiment
+    if (numCorrect == PTRIAL_MAX) {
+      for (int i = 0; i < 3; i++) {
+        tone(motorPin1, 262, 250);
+        delay(250);
+        tone(motorPin1, 330, 250);
+        delay(250);
+        tone(motorPin1, 392, 250);
+        delay(250);
+      }
+      delay(3000);
     }
-    ObjShowTime = micros();
   }
+  else {
+    if (motorState1 == LOW && buttonState1 == 0 && motorState2 == LOW && buttonState2 == 0 && motorState3 == LOW && buttonState3 == 0 && numCorrect >= PTRIAL_MAX) {
+      motorPick = random(trialVariable);
+      tone(motorPin1, toneVar[motorPick]);
+      if (motorPick == 0) {      
+        motorState1 = HIGH;
+        motorState2 = LOW;
+        motorState3 = LOW;
+        StimType = 1;
+      }
+      else if (motorPick == 1) {  
+        motorState1 = LOW;
+        motorState2 = HIGH;
+        motorState3 = LOW;
+        StimType = 2;
+      }
+      else {
+        motorState1 = LOW;
+        motorState2 = LOW;
+        motorState3 = HIGH;
+        StimType = 3;
+      }
+      ObjShowTime = micros();
+    }
 
-  if (buttonState1 == HIGH || buttonState2 == HIGH || buttonState3 == HIGH) {
-    ReactionTime = micros();
-    trialNum++;
-    if (buttonState1 == HIGH) {
-      Guess = 1;
-      digitalWrite(buttonPin1, 0);
-      buttonState1 = LOW;
+    if (buttonState1 == HIGH || buttonState2 == HIGH || buttonState3 == HIGH) {
+      ReactionTime = micros();
+      if (buttonState1 == HIGH) {
+        Guess = 1;
+        digitalWrite(buttonPin1, 0);
+        buttonState1 = LOW;
+      }
+      else if (buttonState2 == HIGH) {
+        Guess = 2;
+        digitalWrite(buttonPin2, 0);
+        buttonState2 = LOW;
+      }
+      else {
+        Guess = 3;
+        digitalWrite(buttonPin3, 0);
+        buttonState3 = LOW;
+      }
+      if (StimType == Guess) {
+        Correct = true;
+        numCorrect++;
+      }
+      else {
+        Correct = false;
+      }
+      Serial.print(ObjShowTime);
+      Serial.print(",");
+      Serial.print(ReactionTime);
+      Serial.print(",");
+      Serial.print(StimType);
+      Serial.print(",");
+      Serial.print(Guess);
+      Serial.print(",");
+      Serial.println(Correct);
+      noTone(motorPin1);
+      if (motorState1 == HIGH) {
+        motorState1 = LOW;
+      }
+      else if (motorState2 == HIGH)
+      {
+        motorState2 = LOW;
+      }
+      else
+      {
+        motorState3 = LOW;
+      }
+      randDelay = random(500, 1500);
+      delay(randDelay);
     }
-    else if (buttonState2 == HIGH) {
-      Guess = 2;
-      digitalWrite(buttonPin2, 0);
-      buttonState2 = LOW;
+    // Check if trial limit reached, flash LEDs to signal end of experiment
+    if (numCorrect == TRIAL_MAX + 1) {
+      for (int i = 0; i < 3; i++) {
+        tone(motorPin1, 262, 250);
+        delay(250);
+        tone(motorPin1, 330, 250);
+        delay(250);
+        tone(motorPin1, 392, 250);
+        delay(250);
+      }
+      // End the program
+      exit(0);
     }
-    else {
-      Guess = 3;
-      digitalWrite(buttonPin3, 0);
-      buttonState3 = LOW;
-    }
-    if (StimType == Guess) {
-      Correct = true;
-      numCorrect++;
-    }
-    else {
-      Correct = false;
-    }
-    Serial.print(trialNum);
-    Serial.print(",");
-    Serial.print(ObjShowTime);
-    Serial.print(",");
-    Serial.print(ReactionTime);
-    Serial.print(",");
-    Serial.print(StimType);
-    Serial.print(",");
-    Serial.print(Guess);
-    Serial.print(",");
-    Serial.println(Correct);
-    noTone(motorPin1);
-    if (motorState1 == HIGH) {
-      motorState1 = LOW;
-    }
-    else if (motorState2 == HIGH)
-    {
-      motorState2 = LOW;
-    }
-    else
-    {
-      motorState3 = LOW;
-    }
-    randDelay = random(500, 1500);
-    delay(randDelay);
-  }
-  /*// Monitor for the start of a new second
-  DateTime currentTime;
-  do {
-    currentTime = rtc.now();
-  } while (currentTime.second() == rtc.now().second());*/
-
-  // When new second detected = loop exits, synchronize microsecond timer
-  /*startTime = rtc.now();
-  startMicros = micros();
-
-  Serial.print(startTime.unixtime());
-  Serial.print(".000,");
-  
-  // Wait for a randome time between 0.5 and 0.6 seconds to simulate experiment delay
-  randDelay = random(500, 600);
-  delay(randDelay);
-  
-  // Light the LED with a random color
-  CRGB color = getRandomColor();
-  leds[ledIndex] = color;
-  FastLED.show();
-  
-  int correctButton = getButtonForColor(color);
-  unsigned long obj = micros();
-  ObjShowTime = micros() - startMicros; 
-
-  // Wait for the correct button press
-  while (!monitorButtonPress(correctButton)) {
-    // Monitor for button press
-  }
-
-  ReactionTime = micros() - obj;
-  trialNum++;
-
-  leds[ledIndex] = CRGB::Black;
-  FastLED.show();
-
-  Serial.print(trialNum);
-  Serial.print(",");
-  Serial.print(ObjShowTime);
-  Serial.print(",");
-  Serial.println(ReactionTime);*/
-  
-  // Check if trial limit reached, flash LEDs to signal end of experiment
-  if (numCorrect == TRIAL_MAX) {
-    for (int i = 0; i < 3; i++) {
-      tone(motorPin1, 262, 250);
-      delay(250);
-      tone(motorPin1, 330, 250);
-      delay(250);
-      tone(motorPin1, 392, 250);
-      delay(250);
-    }
-    // End the program
-    exit(0);
   }
 }
