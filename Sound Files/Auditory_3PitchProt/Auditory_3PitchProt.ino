@@ -11,7 +11,7 @@ int motorState1 = LOW;
 int motorState2 = LOW;
 int motorState3 = LOW;
 int motorPick;
-int toneVar[3] = {262, 660, 1568};
+int toneVar[3] = {262, 524, 1048};
 
 // Button variables
 int buttonPin3 = 6;
