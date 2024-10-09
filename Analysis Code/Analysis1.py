@@ -68,9 +68,9 @@ plt.xlim(0, 500)
 plt.ylim(0, 500)
 
 # Adding labels and title
-plt.title('2 Stimuli vs. 3 Stimuli - Auditory, N=10')
-plt.xlabel('2 Stimuli (ms)')
-plt.ylabel('3 Stimuli (ms)')
+plt.title('2 Stimuli vs. 3 Stimuli - Auditory, N=10') # CHANGE THIS LABEL IF NECESSARY
+plt.xlabel('2 Stimuli (ms)') # CHANGE THIS LABEL IF NECESSARY
+plt.ylabel('3 Stimuli (ms)') # CHANGE THIS LABEL IF NECESSARY
 plt.legend()
 plt.grid(False)
 plt.tight_layout()

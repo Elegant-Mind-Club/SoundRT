@@ -38,7 +38,7 @@ def main(files):
         # Plot each data point with its own color
         for j in range(len(data1_mean)):
             label = f'{i+1} Stimuli Data' if j == 0 and (i == 1 or i == 2) else 'Simple Reflex Data' if j == 0 else None  # Add label only for the first point to avoid duplicates
-            plt.errorbar(data1_mean[j], data2_mean[j], xerr=data1_se[j], yerr=data2_se[j], fmt=markers[i], color=colors[j], label=label)
+            plt.errorbar(data1_mean[j], data2_mean[j], xerr=data1_se[j], yerr=data2_se[j], fmt=markers[i], color=colors[j], label=label, capsize=5)
         
 
     # Add y=x reference line
@@ -52,9 +52,9 @@ def main(files):
     plt.ylim(0, 500)
 
     # Add labels and legend
-    plt.xlabel('Visual Data (ms)')
-    plt.ylabel('Auditory Data (ms)')
-    plt.title('Auditory vs Visual Data - 1, 2, 3 Stimuli')
+    plt.xlabel('Visual Data (ms)') # CHANGE THIS LABEL IF NECESSARY
+    plt.ylabel('Auditory Data (ms)') # CHANGE THIS LABEL IF NECESSARY
+    plt.title('Auditory vs Visual Data - 1, 2, 3 Stimuli') # CHANGE THIS LABEL IF NECCESSARY
     plt.legend()
     plt.grid(False)
 
