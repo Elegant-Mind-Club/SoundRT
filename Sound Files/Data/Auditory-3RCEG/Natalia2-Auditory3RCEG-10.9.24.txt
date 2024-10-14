@@ -1,4 +1,4 @@
-wTime,ReactionTime,StimType,Guess,1728489448.000,3817464
+1728489448.000,3817464
 ObjShowTime,ReactionTime,StimType,Guess,Correct
 63409908,65100324,2,2,1
 65759752,66742752,1,1,1

@@ -23,14 +23,14 @@ def process_csv(input_file_path, output_file_path):
     
 
     # Step 3: Perform the calculations
-    data.iloc[:, 1] = data.iloc[:, 1] / 1000 
-    data.iloc[:, 2] = data.iloc[:, 2] / 1000  
+    data.iloc[:, 0] = data.iloc[:, 0] / 1000 
+    data.iloc[:, 1] = data.iloc[:, 1] / 1000  
 
-    data.iloc[:, 1] = data.iloc[:, 1] + (first_number*1000)  # Add to the first column
-    data.iloc[:, 1] = data.iloc[:, 1] - (second_number/1000)
+    data.iloc[:, 0] = data.iloc[:, 0] + (first_number*1000)  # Add to the first column
+    data.iloc[:, 0] = data.iloc[:, 0] - (second_number/1000)
 
-    data.iloc[:, 2] = data.iloc[:, 2] + (first_number*1000)
-    data.iloc[:, 2] = data.iloc[:, 2] - (second_number/1000) # Subtract from the second column
+    data.iloc[:, 1] = data.iloc[:, 1] + (first_number*1000)
+    data.iloc[:, 1] = data.iloc[:, 1] - (second_number/1000) # Subtract from the second column
 
 
     # Step 4: Save the processed data to the output file path
