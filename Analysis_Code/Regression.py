@@ -30,14 +30,22 @@ def plot_data_with_regression(file_path, plot_title, plot_xlabel, plot_ylabel):
         print("The CSV file does not contain the required columns.")
         return
 
+    # Perform linear regression
     slope, intercept, r_value, p_value, std_err = linregress(x, y)
 
-    regression_line = slope * x + intercept
+    # Define the x values for the extended regression line
+    x_vals = np.array([0, 500])
+    regression_line = slope * x_vals + intercept
 
-    # With error bars and regression line
+    # Plot the scatter plot with error bars and regression line
     plt.figure(figsize=(10, 6))
     plt.errorbar(x, y, xerr=x_err, yerr=y_err, fmt='o', ecolor='gray', capsize=3, alpha=0.6, label='Data points')
-    plt.plot(x, regression_line, color='green', label='Regression line (Intercept)')
+    plt.plot(x_vals, regression_line, color='green', label='Regression line (Intercept)')
+
+    plt.xlim(0, 500) # Set the x limit 
+    plt.ylim(0, 500) # Set the y limit 
+    plt.xticks(np.arange(0, 501, 50)) # Set the class intervals for x 
+    plt.yticks(np.arange(0, 501, 50)) # Set the class intervals for y
 
     # Labels, title, and legend
     plt.xlabel(str(plot_xlabel))
