@@ -7,14 +7,8 @@ import numpy as np
 # Function to calculate mean and SEM from a CSV file with raw data points
 def read_means_sem_from_csv(file_path):
     df = pd.read_csv(file_path)
-    df = df[df['Correct'] == 1]
+    df.columns = df.columns.str.strip()
     df['TimeDifference'] = df['ReactionTime'] - df['ObjShowTime']
-    Q1 = df['TimeDifference'].quantile(0.25)
-    Q3 = df['TimeDifference'].quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
-    df = df[(df['TimeDifference'] >= lower_bound) & (df['TimeDifference'] <= upper_bound)]
     listLength = df['TimeDifference'].shape[0]
     means = [df['TimeDifference'].mean().tolist()]
     sems = [(df['TimeDifference'].std() / np.sqrt(listLength)).tolist()]
@@ -63,12 +57,12 @@ for i, ((means_visual, means_auditory), (sems_visual, sems_auditory)) in enumera
 # Adding y=x reference line
 min_val = min(min(mean) for mean_pair in paired_means for mean in mean_pair)
 max_val = max(max(mean) for mean_pair in paired_means for mean in mean_pair)
-plt.plot([0, 700], [0, 700], linestyle='solid', color='green', label='y=x reference line')
-plt.xlim(0, 700)
-plt.ylim(0, 700)
+plt.plot([0, 500], [0, 500], linestyle='solid', color='green', label='y=x reference line')
+plt.xlim(0, 500)
+plt.ylim(0, 500)
 
 # Adding labels and title
-plt.title('Visual vs. Auditory Data: 3 Stimuli, N=11') # CHANGE THIS LABEL IF NECESSARY
+plt.title('Visual vs. Auditory Data: 3 Stimuli, N=10') # CHANGE THIS LABEL IF NECESSARY
 plt.xlabel('Visual (ms)') # CHANGE THIS LABEL IF NECESSARY
 plt.ylabel('Auditory (ms)') # CHANGE THIS LABEL IF NECESSARY
 plt.legend()
