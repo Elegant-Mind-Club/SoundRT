@@ -7,14 +7,7 @@ import numpy as np
 
 def read_means_sem_from_csv(file_path):
     df = pd.read_csv(file_path)
-    df = df[df['Correct'] == 1]
     df['TimeDifference'] = df['ReactionTime'] - df['ObjShowTime']
-    Q1 = df['TimeDifference'].quantile(0.25)
-    Q3 = df['TimeDifference'].quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
-    df = df[(df['TimeDifference'] >= lower_bound) & (df['TimeDifference'] <= upper_bound)]
     listLength = df['TimeDifference'].shape[0]
     means = [df['TimeDifference'].mean().tolist()]
     sems = [(df['TimeDifference'].std() / np.sqrt(listLength)).tolist()]

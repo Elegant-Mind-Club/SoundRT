@@ -10,23 +10,7 @@ def gaussian(x, amp, mu, sigma):
 def process_data(df, df_name, coloration, coloration2, coloration3):
     
     df.columns = df.columns.str.strip()
-    
-    # Step 1: Remove any trials that are False in the 'Correct' column
-    df = df[df['Correct'] == 1]
-
-    # Step 2: Generate a new column 'TimeDifference' by doing ReactionTime - ObjShowTime
     df['TimeDifference'] = df['ReactionTime'] - df['ObjShowTime']
-
-    """# Step 3: Subtract 50 ms from all trials
-    df['TimeDifference'] -= 50"""
-
-    # Step 4: Remove outliers using the 1.5*IQR method
-    Q1 = df['TimeDifference'].quantile(0.25)
-    Q3 = df['TimeDifference'].quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
-    df = df[(df['TimeDifference'] >= lower_bound) & (df['TimeDifference'] <= upper_bound)]
 
     mean_value = df['TimeDifference'].mean()
     std_deviation = df['TimeDifference'].std()
