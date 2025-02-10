@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <RTClib.h>
 
-int PTRIAL_MAX = 25;
+int PTRIAL_MAX = 5;
 int trialMax = 100 + PTRIAL_MAX;
 int numCorrect = 0;
 int numMotors = 2;  // 2 INPUT RT TEST
