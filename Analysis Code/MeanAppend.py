@@ -19,7 +19,7 @@ def main():
     args = parser.parse_args()
 
     data_set = []
-    out_file = '/Users/taneeshkondapally/Documents/GitHub/SoundRT/MeanAppendAudioVisualSR.csv' # CHANGE THIS LINE IF YOU'RE RUNNING IT AWAY FROM MY LAPTOP
+    out_file = '/Users/taneeshkondapally/Documents/GitHub/SoundRT/MeanAppendTouchVisionSR.csv' # CHANGE THIS LINE IF YOU'RE RUNNING IT AWAY FROM MY LAPTOP
     for pair in args.file_pairs:
         try:
             file_visual, file_auditory = pair.split(',')

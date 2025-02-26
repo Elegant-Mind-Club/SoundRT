@@ -10,8 +10,18 @@ def gaussian(x, amp, mu, sigma):
 def process_data(df, df_name, coloration, coloration2, coloration3):
     
     df.columns = df.columns.str.strip()
+    df = df[df['Correct'] == 1]
+
+    # Step 2: Generate a new column 'TimeDifference' by doing ReactionTime - ObjShowTime
     df['TimeDifference'] = df['ReactionTime'] - df['ObjShowTime']
 
+    # Step 4: Remove outliers using the 1.5*IQR method
+    Q1 = df['TimeDifference'].quantile(0.25)
+    Q3 = df['TimeDifference'].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    df = df[(df['TimeDifference'] >= lower_bound) & (df['TimeDifference'] <= upper_bound)]
     mean_value = df['TimeDifference'].mean()
     std_deviation = df['TimeDifference'].std()
 
@@ -35,9 +45,9 @@ def process_data(df, df_name, coloration, coloration2, coloration3):
 
 
 
-file_path = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Auditory-SRC/AAppend-AuditorySRC-N=4.csv' # INSERT FILE NAMES TO ANALYZE HERE
-file_path2 = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Auditory-2RCG/AAppend-Auditory2RCG-N=4.csv'
-file_path3 = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Auditory-3RCEG/AAppend-Auditory3RCEG-N=4.csv'
+file_path = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Auditory-SRC/Arushi-AuditorySRC-10.14.24.csv' # INSERT FILE NAMES TO ANALYZE HERE
+file_path2 = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Auditory-3RCEG/Arushi-Auditory3RCEG-10.14.24.csv'
+file_path3 = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Auditory-2RCG/Arushi-Auditory2RCG-10.14.24.csv'
 #file_path4 = r'/Users/taneeshkondapally/Documents/GitHub/SoundRT/Sound Files/Data/Auditory-SRC/AAppend-AuditorySRC-N=4.csv'
 data = pd.read_csv(file_path, delimiter=',')
 data2 = pd.read_csv(file_path2, delimiter=',')
@@ -66,7 +76,7 @@ process_data(data2, data2_name, TwoGColor, TwoSColor, TwoFColor)
 process_data(data3, data3_name, ThreeGColor, ThreeSColor, ThreeFColor)
 #process_data(data4, data4_name, FourGColor, FourSColor, FourFColor)
 
-plt.title('Histogram for Auditory 1, 2, and 3 Stimuli Reflex Time with Gaussian Fit — N=4')
+plt.title('Histogram for Auditory 1, 2, and 3 Stimuli Reflex Time with Gaussian Fit — Participant 3, Physics 19')
 plt.xlabel('Reaction Time (ms)')
 plt.ylabel('Frequency Density')
 plt.legend()

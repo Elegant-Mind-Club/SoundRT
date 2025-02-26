@@ -47,14 +47,14 @@ def main(files):
         np.max([plt.gca().get_xlim(), plt.gca().get_ylim()]),  # max of both axes
     ]
 
-    plt.plot([0, 500], [0, 500], 'k-', alpha=0.75, zorder=0)  # 'k-' is a solid black line
-    plt.xlim(0, 500)
-    plt.ylim(0, 500)
+    plt.plot([0, 700], [0, 700], 'k-', alpha=0.75, zorder=0)  # 'k-' is a solid black line
+    plt.xlim(0, 700)
+    plt.ylim(0, 700)
 
     # Add labels and legend
-    plt.xlabel('Visual Data (ms)') # CHANGE THIS LABEL IF NECESSARY
-    plt.ylabel('Auditory Data (ms)') # CHANGE THIS LABEL IF NECESSARY
-    plt.title('Auditory vs Visual Data - 1, 2, 3 Stimuli') # CHANGE THIS LABEL IF NECCESSARY
+    plt.xlabel('Touch Data (ms)') # CHANGE THIS LABEL IF NECESSARY
+    plt.ylabel('Vision Data (ms)') # CHANGE THIS LABEL IF NECESSARY
+    plt.title('Touch vs Vision Data - 1, 2, 3 Stimuli') # CHANGE THIS LABEL IF NECCESSARY
     plt.legend()
     plt.grid(False)
 
