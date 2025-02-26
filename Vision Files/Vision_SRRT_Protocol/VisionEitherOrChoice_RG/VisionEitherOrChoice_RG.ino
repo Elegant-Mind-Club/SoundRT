@@ -22,8 +22,7 @@ CRGB leds[NUM_LEDS];
 
 #define BRIGHTNESS  128
 
-int PTRIAL_MAX = 0;
-int TRIAL_MAX = 100 + PTRIAL_MAX;
+int TRIAL_MAX = 75;
 int ledIndex = 66;  // Index of the LED to be used on the strip
 CRGB color;
 
@@ -253,9 +252,10 @@ void loop() {
         buttonState1 = digitalRead(BUTTON_PIN_LEFT);
         buttonState2 = digitalRead(BUTTON_PIN_MID);
         buttonState3 = digitalRead(BUTTON_PIN_RIGHT);
-        if (buttonState1 == HIGH) {
+        if (buttonState1 == HIGH || buttonState2 == HIGH || buttonState3 == HIGH) {
           responseRecorded = true;
-          Guess = 1;
+          if (buttonState1 == HIGH) Guess = 1;
+          else Guess = 3;
           break;
         }
       }
@@ -290,15 +290,20 @@ void loop() {
       else {
         Correct = false;
       }*/
-      Serial.print(ObjShowTime);
-      Serial.print(",");
-      Serial.print(ReactionTime);
-      Serial.print(",");
-      Serial.print(StimType);
-      Serial.print(",");
-      Serial.print(Guess);
-      Serial.print(",");
-      Serial.println(Correct);
+      if (StimType == 1) {
+        Serial.print(ObjShowTime);
+        Serial.print(",");
+        Serial.print(ReactionTime);
+        Serial.print(",");
+        Serial.print(StimType);
+        Serial.print(",");
+        Serial.print(Guess);
+        Serial.print(",");
+        Serial.println(Correct);
+        if (Correct) {
+          numCorrect++;
+        }
+      }
       leds[ledIndex] = CRGB::Black;
       FastLED.show();
       if (motorState1 == HIGH) {
@@ -314,7 +319,6 @@ void loop() {
       }
       randDelay = random(500, 1500);
       delay(randDelay);
-    }
     // Check if trial limit reached, flash LEDs to signal end of experiment
     if (numCorrect == TRIAL_MAX) {
       for (int i = 0; i < 3; i++) {
@@ -329,4 +333,3 @@ void loop() {
       exit(0);
     }
   }
-}
