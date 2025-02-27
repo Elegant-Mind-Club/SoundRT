@@ -101,7 +101,7 @@ void loop() {
         motorState3 = LOW;
         StimType = 1;
       }
-      else if (motorPick == 1) {  
+      else if (motorPick == 1) {
         motorState1 = LOW;
         motorState2 = HIGH;
         motorState3 = LOW;
