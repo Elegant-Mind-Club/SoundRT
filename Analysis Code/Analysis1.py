@@ -62,9 +62,9 @@ plt.xlim(0, 500)
 plt.ylim(0, 500)
 
 # Adding labels and title
-plt.title('Touch vs. Vision Data: 3 Stimuli') # CHANGE THIS LABEL IF NECESSARY
+plt.title('Touch vs. Sound Data: 1 Stimuli') # CHANGE THIS LABEL IF NECESSARY
 plt.xlabel('Touch (ms)') # CHANGE THIS LABEL IF NECESSARY
-plt.ylabel('Vision (ms)') # CHANGE THIS LABEL IF NECESSARY
+plt.ylabel('Sound (ms)') # CHANGE THIS LABEL IF NECESSARY
 plt.legend()
 plt.grid(False)
 plt.tight_layout()
