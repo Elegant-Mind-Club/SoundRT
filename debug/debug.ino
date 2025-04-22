@@ -20,17 +20,17 @@ void setup() {
   FastLED.setBrightness(BRIGHTNESS);
 
   // Turn all LEDs off initially
-  fill_solid(leds, NUM_LEDS, CRGB::Black);
+  fill_solid(leds, NUM_LEDS, CRGB::Red); //turn on
   FastLED.show();
 }
 
 void loop() {
   // Blink red LED
-  leds[LED_INDEX] = CRGB::Red;
-  FastLED.show();
-  delay(500);
+  //leds[LED_INDEX] = CRGB::Red;
+  //FastLED.show();
+  //delay(500);
 
-  leds[LED_INDEX] = CRGB::Black;
-  FastLED.show();
-  delay(500);
+  //leds[LED_INDEX] = CRGB::Black;
+  //FastLED.show();
+ // delay(500);
 }
