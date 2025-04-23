@@ -57,12 +57,12 @@ for i, ((means_visual, means_auditory), (sems_visual, sems_auditory)) in enumera
 # Adding y=x reference line
 min_val = min(min(mean) for mean_pair in paired_means for mean in mean_pair)
 max_val = max(max(mean) for mean_pair in paired_means for mean in mean_pair)
-plt.plot([0, 500], [0, 500], linestyle='solid', color='green', label='y=x reference line')
-plt.xlim(0, 500)
-plt.ylim(0, 500)
+plt.plot([0, 600], [0, 600], linestyle='solid', color='green', label='y=x reference line')
+plt.xlim(0, 600)
+plt.ylim(0, 600)
 
 # Adding labels and title
-plt.title('Touch vs. Sound Data: 1 Stimuli') # CHANGE THIS LABEL IF NECESSARY
+plt.title('Touch vs. Sound Data: 3 Stimuli') # CHANGE THIS LABEL IF NECESSARY
 plt.xlabel('Touch (ms)') # CHANGE THIS LABEL IF NECESSARY
 plt.ylabel('Sound (ms)') # CHANGE THIS LABEL IF NECESSARY
 plt.legend()
