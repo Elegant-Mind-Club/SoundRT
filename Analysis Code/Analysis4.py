@@ -25,12 +25,15 @@ def main(files):
     for i, file in enumerate(files):
         # Read the CSV file into a DataFrame
         data = pd.read_csv(file)
+
+        data = data.replace({r'\[': '', r'\]': ''}, regex=True)
         
         # Extract columns assuming the order: data1 mean, data1 standard error, data2 mean, data2 standard error
-        data1_mean = data.iloc[:, 0]
-        data1_se = data.iloc[:, 1]
-        data2_mean = data.iloc[:, 2]
-        data2_se = data.iloc[:, 3]
+        data1_mean = data.iloc[:, 0].astype(float)
+        data1_se = data.iloc[:, 1].astype(float)
+        data2_mean = data.iloc[:, 2].astype(float)
+        data2_se = data.iloc[:, 3].astype(float)
+
         
         # Generate colors for each data point in the file
         colors = cm.rainbow(np.linspace(0, 1, len(data1_mean)))
@@ -47,14 +50,14 @@ def main(files):
         np.max([plt.gca().get_xlim(), plt.gca().get_ylim()]),  # max of both axes
     ]
 
-    plt.plot([0, 700], [0, 700], 'k-', alpha=0.75, zorder=0)  # 'k-' is a solid black line
-    plt.xlim(0, 700)
-    plt.ylim(0, 700)
+    plt.plot([0, 800], [0, 800], 'k-', alpha=0.75, zorder=0)  # 'k-' is a solid black line
+    plt.xlim(0, 800)
+    plt.ylim(0, 800)
 
     # Add labels and legend
     plt.xlabel('Touch Data (ms)') # CHANGE THIS LABEL IF NECESSARY
-    plt.ylabel('Vision Data (ms)') # CHANGE THIS LABEL IF NECESSARY
-    plt.title('Touch vs Vision Data - 1, 2, 3 Stimuli') # CHANGE THIS LABEL IF NECCESSARY
+    plt.ylabel('Sound Data (ms)') # CHANGE THIS LABEL IF NECESSARY
+    plt.title('Touch vs Sound Data - 1, 2, 3 Stimuli') # CHANGE THIS LABEL IF NECCESSARY
     plt.legend()
     plt.grid(False)
 
