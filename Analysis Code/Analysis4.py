@@ -50,14 +50,14 @@ def main(files):
         np.max([plt.gca().get_xlim(), plt.gca().get_ylim()]),  # max of both axes
     ]
 
-    plt.plot([0, 800], [0, 800], 'k-', alpha=0.75, zorder=0)  # 'k-' is a solid black line
-    plt.xlim(0, 800)
-    plt.ylim(0, 800)
+    plt.plot([0, 600], [0, 600], 'k-', alpha=0.75, zorder=0)  # 'k-' is a solid black line
+    plt.xlim(0, 600)
+    plt.ylim(0, 600)
 
     # Add labels and legend
     plt.xlabel('Touch Data (ms)') # CHANGE THIS LABEL IF NECESSARY
     plt.ylabel('Sound Data (ms)') # CHANGE THIS LABEL IF NECESSARY
-    plt.title('Touch vs Sound Data - 1, 2, 3 Stimuli') # CHANGE THIS LABEL IF NECCESSARY
+    plt.title('Touch vs Sound Data - 1, 2, 3 Stimuli (Mingda Data - Same Hand vs Different Hand)') # CHANGE THIS LABEL IF NECCESSARY
     plt.legend()
     plt.grid(False)
 
