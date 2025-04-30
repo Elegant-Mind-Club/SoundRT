@@ -57,7 +57,7 @@ def main(files):
     # Add labels and legend
     plt.xlabel('Touch Data (ms)') # CHANGE THIS LABEL IF NECESSARY
     plt.ylabel('Sound Data (ms)') # CHANGE THIS LABEL IF NECESSARY
-    plt.title('Touch vs Sound Data - 1, 2, 3 Stimuli (Doy Data - Same Hand vs Different Hand)') # CHANGE THIS LABEL IF NECCESSARY
+    plt.title('Touch vs Sound Data - 1, 2, 3 Stimuli (Bill Data - Same Hand vs Different Hand)') # CHANGE THIS LABEL IF NECCESSARY
     plt.legend()
     plt.grid(False)
 
