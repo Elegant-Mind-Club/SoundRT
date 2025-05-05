@@ -1,4 +1,3 @@
-.000,3031688
 1746444740.000,6151264
 ObjShowTime,ReactionTime,StimType,Guess,Correct
 84054292,85444860,2,1,0
