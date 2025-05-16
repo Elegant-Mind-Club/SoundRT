@@ -19,7 +19,7 @@ def main():
     args = parser.parse_args()
 
     data_set = []
-    out_file = '/Users/athenamo/Documents/GitHub/SoundRT/Connie_MeanAppendTouchSound3R.csv' # CHANGE THIS LINE IF YOU'RE RUNNING IT AWAY FROM MY LAPTOP
+    out_file = '/Users/athenamo/Documents/GitHub/SoundRT/MeanAppendVisionSound3R.csv' # CHANGE THIS LINE IF YOU'RE RUNNING IT AWAY FROM MY LAPTOP
     for pair in args.file_pairs:
         try:
             file_visual, file_auditory = pair.split(',')
@@ -38,7 +38,7 @@ def main():
             continue
         
         data_set.append((means_visual, sems_visual, means_auditory, sems_auditory))
-    data = pd.DataFrame(data_set, columns=["Touch Mean", "Touch SEM", "Auditory Mean", "Auditory SEM"])
+    data = pd.DataFrame(data_set, columns=["Visual Mean", "Visual SEM", "Auditory Mean", "Auditory SEM"])
     data.to_csv(out_file, index=False)
 
 if __name__ == "__main__":

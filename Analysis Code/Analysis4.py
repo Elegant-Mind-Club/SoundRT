@@ -41,8 +41,8 @@ def main(files):
         # Plot each data point with its own color
         for j in range(len(data1_mean)):
             label = f'{i+1} Stimuli Data' if j == 0 and (i == 1 or i == 2) else 'Simple Reflex Data' if j == 0 else None  # Add label only for the first point to avoid duplicates
-            plt.errorbar(data1_mean[j], data2_mean[j], xerr=data1_se[j], yerr=data2_se[j], fmt=markers[i], color=colors[j], label=label, capsize=5)
-        
+            plt.errorbar(data2_mean[j], data1_mean[j], xerr=data2_se[j], yerr=data1_se[j], fmt=markers[i], color=colors[j], label=label, capsize=5)
+
 
     # Add y=x reference line
     lims = [
@@ -50,14 +50,14 @@ def main(files):
         np.max([plt.gca().get_xlim(), plt.gca().get_ylim()]),  # max of both axes
     ]
 
-    plt.plot([0, 800], [0, 900], 'k-', alpha=0.75, zorder=0)  # 'k-' is a solid black line
-    plt.xlim(0, 800)
-    plt.ylim(0, 900)
+    plt.plot([0, 700], [0, 700], 'k-', alpha=0.75, zorder=0)  # 'k-' is a solid black line
+    plt.xlim(0, 700)
+    plt.ylim(0, 700)
 
     # Add labels and legend
-    plt.xlabel('Touch Data (ms)') # CHANGE THIS LABEL IF NECESSARY
-    plt.ylabel('Sound Data (ms)') # CHANGE THIS LABEL IF NECESSARY
-    plt.title('Touch vs Sound Data - 1, 2, 3 Stimuli (Magdolin Data - Same Hand vs Different Hand)') # CHANGE THIS LABEL IF NECCESSARY
+    plt.xlabel('Sound Data (ms)') # CHANGE THIS LABEL IF NECESSARY
+    plt.ylabel('Vision Data (ms)') # CHANGE THIS LABEL IF NECESSARY
+    plt.title('Sound vs Vision Data - 1, 2, 3 Stimuli, N = 10') # CHANGE THIS LABEL IF NECCESSARY
     plt.legend()
     plt.grid(False)
 
