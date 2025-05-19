@@ -51,13 +51,12 @@ def main(file_paths):
                 )
 
     # Reference line
-    plt.plot([0, 1000], [0, 1000], 'k-', alpha=0.75, zorder=0)
-    plt.xlim(0, 1000)
-    plt.ylim(0, 1000)
+    plt.plot([0, 700], [0, 700], 'k-', alpha=0.75, zorder=0)
+    plt.xlim(0, 700)
+    plt.ylim(0, 700)
     plt.xlabel('Touch Data (ms)')
     plt.ylabel('Sound Data (ms)')
-    plt.title('Touch vs Sound Data - All Participants (Same Hand vs Different Hand)')
-    plt.legend()
+    plt.title('Sound vs Touch Data (Same Hand vs Different Hand)')
     plt.grid(False)
     plt.tight_layout()
     plt.show()
